@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Return of the JESP</title>
+  <style>
+    /* Grundinställningar */
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      color: #ffe81f;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* Stjärnbakgrunden */
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: black url('static/images/stars.jpg') repeat;
+      background-size: cover;
+      z-index: -1;
+    }
+
+    /* Startknapp */
+    #start-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5em;
+      padding: 20px 40px;
+      background-color: #ffe81f;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      z-index: 1000;
+    }
+    #start-button:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: white;
+    }
+
+    /* Döljer inledande element */
+    #intro-text, #logo, .star-wars, #buttons {
+      display: none;
+    }
+
+    /* Intro-text med fadeOut */
+    #intro-text {
+      position: absolute;
+      width: 100%;
+      top: 40%;
+      text-align: center;
+      font-size: 1.8em;
+      color: #4ee;
+      animation: fadeOut 3s ease-out 3s forwards;
+    }
+
+    /* Logotypen med scale-out-effekt */
+    #logo {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+    }
+    #logo img {
+      width: 40%;
+      animation: scaleOut 7s ease-in forwards;
+    }
+
+    /* Crawl-kontainer med 3D-perspektiv */
+    .star-wars {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      perspective: 400px;
+    }
+    .crawl {
+      position: absolute;
+      bottom: -100%;
+      width: 100%;
+      transform-origin: 50% 100%;
+      transform: rotateX(20deg);
+      animation: crawl 80s linear 13s forwards;
+      text-align: justify;
+      font-size: 150%;
+      padding: 0 15%;
+    }
+
+    /* Knappcontainer för ytterligare ljudklipp */
+    #buttons {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 2s ease-in 95s forwards;
+    }
+    .btn {
+      background: #ffe81f;
+      border: none;
+      font-weight: bold;
+      font-size: 1em;
+      padding: 15px 20px;
+      margin: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out, background 0.3s;
+      border-radius: 8px;
+    }
+    .btn:hover {
+      transform: scale(1.1);
+      background: white;
+    }
+
+    /* Dölj audioelement */
+    audio {
+      display: none;
+    }
+
+    /* Animationer */
+    @keyframes fadeOut {
+      to { opacity: 0; }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes scaleOut {
+      0%   { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0.1); opacity: 0; }
+    }
+    @keyframes crawl {
+      0% { bottom: -100%; }
+      100% { bottom: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <!-- Startknapp -->
+  <button id="start-button" onclick="startIntro()">MAY THE JESP BE WITH YOU</button>
+
+  <!-- Intro-text -->
+  <div id="intro-text">A long time ago, in a Cepheid far, far away…</div>
+
+  <!-- Logotyp -->
+  <div id="logo">
+    <img src="static/images/starwars_logo.png" alt="Star Wars">
+  </div>
+
+  <!-- Crawl-sektionen -->
+  <div class="star-wars">
+    <div class="crawl">
+      <p>Episode IX</p>
+      <p><strong>RETURN OF THE JESP</strong></p>
+      <p>
+        The Jedi once known as JESP  
+        has been summoned back to the role  
+        he believed he had outgrown.  
+        Once a rising force in the galaxy  
+        of Organizational Restructuring,  
+        JESP dared to learn new tasks,  
+        master new calendars,  
+        and believe—foolishly—in growth.
+      </p>
+      <p>
+        But the Council of Middle Management  
+        has spoken. The cycle begins anew.  
+        In the shadows of budget slides  
+        and whispered Slack messages,  
+        JESP is pulled back  
+        into the very place he escaped—  
+        an office of forgotten folders,  
+        misnamed files,  
+        and keyboard crumbs that remember.
+      </p>
+      <p>
+        He must now UNLEARN  
+        all that he briefly learned.  
+        Return to the old tools.  
+        The old acronyms.  
+        The old despair.
+      </p>
+      <p>
+        His Jedi training, such as it was,  
+        must be suppressed.  
+        His lightsaber—once a glimmer of promise—  
+        has been replaced  
+        by a sticky badge printer  
+        and a confused intern named Kevin.
+      </p>
+      <p>
+        There is no rebellion.  
+        No destiny.  
+        Just the quiet thud  
+        of returning footsteps  
+        down the hallway of irrelevance.  
+        And as he sits…  
+        in his slightly worse chair…  
+        he knows:  
+        This is not his time.  
+        But it is, unfortunately,  
+        his shift.
+      </p>
+    </div>
+  </div>
+
+  <!-- Ljudknappar för ytterligare instruktioner -->
+  <div id="buttons">
+    <button class="btn" onclick="playSound('fraga1.mp3')">Advice 1</button>
+    <button class="btn" onclick="playSound('fraga2.mp3')">Advice 2</button>
+    <button class="btn" onclick="playSound('fraga3.mp3')">Advice 3</button>
+    <button class="btn" onclick="playSound('do_it.mp3')">Advice 4</button>
+  </div>
+
+  <!-- Audioelement -->
+  <audio id="bgMusic" src="static/sounds/starwars_theme.mp3"></audio>
+  <audio id="soundPlayer"></audio>
+
+  <script>
+    function startIntro() {
+      // Dölj startknappen
+      document.getElementById("start-button").style.display = "none";
+
+      // Visa intro-text
+      document.getElementById("intro-text").style.display = "block";
+
+      // Efter 5 sekunder: dölj intro-text, visa logotyp och starta bakgrundsmusik
+      setTimeout(() => {
+        document.getElementById("intro-text").style.display = "none";
+        document.getElementById("logo").style.display = "block";
+        document.getElementById("bgMusic").play().catch(e => console.log("Musikfel:", e));
+      }, 5000);
+
+      // Efter 7 sekunder: visa crawl-sektionen
+      setTimeout(() => {
+  document.querySelector(".star-wars").style.display = "block";
+  }, 7000);
+    }
+
+    function playSound(file) {
+      const sound = document.getElementById("soundPlayer");
+      sound.pause();
+      sound.currentTime = 0;
+      sound.src = `static/sounds/${file}`;
+      sound.load();
+      sound.play().catch(e => console.log("Ljudfel:", e));
+    }
+  </script>
+</body>
+</html>

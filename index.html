@@ -20,7 +20,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: black url('static/images/stars.jpg') repeat;
+      background: black url('static/images/stars.svg') repeat;
       background-size: cover;
       z-index: -99;
     }
@@ -235,7 +235,7 @@
   
   <!-- Logotyp -->
   <div id="logo">
-    <img src="static/images/starwars_logo.png" alt="Star Wars Logo">
+    <img src="static/images/starwars_logo.svg" alt="Star Wars Logo">
   </div>
 
   <!-- Centralt Title-element -->
@@ -261,7 +261,7 @@
         a vessel fully equipped for the mission ahead. Unfortunately, JESP is not.
       </p>
       <p>
-        He cannot read a star map. He thinks “agile” is a species. He brought a spoon to a lightsaber duel.
+        He cannot read a star map. He thinks "agile" is a species. He brought a spoon to a lightsaber duel.
       </p>
       <p>
         His Jedi training, such as it was, must be suppressed.
@@ -275,13 +275,13 @@
         Unaware of the trials to come, JESP must now UNLEARN all that he once tried to learn.
       </p>
       <p>
-        The fate of the galaxy may hang in the balance… but mostly, it’s just hoping he stays out of the way.
+        The fate of the galaxy may hang in the balance… but mostly, it's just hoping he stays out of the way.
       </p>
     </div>
   </div>
 
   <!-- Planet-effekt -->
-  <img id="planet-effect" src="static/images/planet.png" alt="Planet with Moons">
+  <img id="planet-effect" src="static/images/planet.svg" alt="Planet with Moons">
 
   <!-- Ljudknappar -->
   <div id="buttons">
@@ -293,7 +293,7 @@
 
   <!-- Audioelement -->
   <audio id="bgMusic" src="static/sounds/starwars_theme.mp3" preload="auto"></audio>
-  <audio id="soundPlayer"></audio>
+  <audio id="soundPlayer" preload="auto"></audio>
 
   <script>
     // Sleep-funktion baserad på Promise, så att vi kan använda async/await
@@ -336,13 +336,27 @@
       introText.style.display = "block";
       await sleep(5000); // Totalt 5 s; CSS fader ut intro-text
 
-      // 4. Vid 5 s: Dölj intro-text, visa logotyp och starta bakgrundsmusik
+      // 4. Vid 5 s: Dölj intro-text, visa logotyp och starta bakgrundsmusik EXAKT SAMTIDIGT
       introText.style.display = "none";
       const logo = document.getElementById("logo");
-      logo.style.display = "block";
       const bgMusic = document.getElementById("bgMusic");
-      // Säkerställ att musiken startas – försök om det inte går direkt
-      try { await bgMusic.play(); } catch(e) { console.log("Musikfel:", e); }
+      
+      // Ladda in musiken i förväg och pausa den, så den är redo att spelas upp
+      bgMusic.load();
+      bgMusic.volume = 1.0; // Säkerställ maxvolym
+      bgMusic.currentTime = 0;
+      
+      // Visa logotypen och starta musiken SAMTIDIGT - detta är SUPERVIKTIGT!
+      logo.style.display = "block";
+      
+      // Spela musiken OMEDELBART när logotypen visas
+      const playPromise = bgMusic.play().catch(e => {
+        console.log("Musikfel:", e);
+        // Försök igen ett par gånger efter användargränssnittshändelsen
+        setTimeout(() => bgMusic.play().catch(e2 => console.log("Andra försöket musikfel:", e2)), 100);
+        setTimeout(() => bgMusic.play().catch(e3 => console.log("Tredje försöket musikfel:", e3)), 500);
+      });
+      
       await sleep(4000);  // Logotypanimering från 5 s till 9 s
 
       // 5. Vid 9 s: Dölj logotyp, visa crawl-sektionen och starta crawl-animationen
@@ -374,6 +388,7 @@
       sound.pause();
       sound.currentTime = 0;
       sound.src = `static/sounds/${file}`;
+      sound.volume = 1.0; // Säkerställ maxvolym
       sound.load();
       sound.play().catch(e => console.log("Ljudfel:", e));
     }

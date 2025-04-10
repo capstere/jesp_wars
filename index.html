@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <title>Return of the JESP</title>
   <style>
-    /* Grundinställningar */
+    /* ===========================================================
+       BASINSTÄLLNINGAR & BAKGRUND
+       =========================================================== */
     body {
       margin: 0;
       overflow: hidden;
@@ -12,8 +14,6 @@
       color: #ffe81f;
       font-family: 'Courier New', Courier, monospace;
     }
-
-    /* Stjärnbakgrund */
     .stars {
       position: fixed;
       width: 100%;
@@ -22,24 +22,10 @@
       background-size: cover;
       z-index: -3;
     }
-    
-    /* Planet och månar – ska dyka in som huvudbakgrund efter crawl */
-    #planet-effect {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      opacity: 0;
-      z-index: -2;
-      animation: planetSlideIn 5s ease-out forwards;
-      animation-delay: 75s; /* Dyker in när crawl är färdig */
-    }
-    @keyframes planetSlideIn {
-      from { transform: translateY(100%); opacity: 0; }
-      to   { transform: translateY(0); opacity: 1; }
-    }
-    
-    /* Startknapp */
+
+    /* ===========================================================
+       START-KNAPP
+       =========================================================== */
     #start-button {
       position: absolute;
       top: 50%;
@@ -60,13 +46,20 @@
       transform: translate(-50%, -50%) scale(1.1);
       background: white;
     }
-    
-    /* Dolda element initialt */
+
+    /* ===========================================================
+       DOLDA ELEMENT FRÅN BÖRJAN
+       =========================================================== */
     #intro-text, #logo, .star-wars, #buttons {
       display: none;
     }
-    
-    /* Intro-text (blå text) visas längre innan den försvinner */
+
+    /* ===========================================================
+       INTRO-TEXT (BLÅ)
+       Visas direkt, fades ut efter 2s --> total ~4s
+       Du kan justera animation-delay och animation-duration
+       för att förändra hur länge texten visas.
+       =========================================================== */
     #intro-text {
       position: absolute;
       width: 100%;
@@ -74,39 +67,46 @@
       text-align: center;
       font-size: 2em;
       color: #4ee;
-      animation: fadeOut 3s ease-out forwards;
-      animation-delay: 6s; /* visas 6 sekunder innan den fadas ut */
+      animation: fadeOut 2s ease-out forwards; /* fadeOut på 2 sek */
+      animation-delay: 2s; /* startar fade ut efter 2 sekunder */
     }
     @keyframes fadeOut {
       from { opacity: 1; }
-      to { opacity: 0; }
+      to   { opacity: 0; }
     }
-    
-    /* Logotypen: visas först stort, zoomar ut långsamt */
+
+    /* ===========================================================
+       LOGOTYP
+       Visas efter 2 sekunder, zoomar ut på 5 sek.
+       Ändra widths + animationen i "logoZoom" om du vill snabba på / förlänga
+       =========================================================== */
     #logo {
       position: absolute;
       top: 30%;
       width: 100%;
       text-align: center;
-      display: none;
     }
     #logo img {
-      width: 80%;  /* större initialt */
+      width: 70%; /* Större initial storlek; justera efter smak */
       animation: logoZoom 5s ease-out forwards;
-      animation-delay: 4s; /* startar zoomning 4 sekunder in */
+      /* Ingen "animation-delay" här – vi visar loggan via JavaScript. */
     }
     @keyframes logoZoom {
-      from { transform: scale(1); opacity: 1; }
-      to { transform: scale(0.1); opacity: 0; }
+      0%   { transform: scale(1);   opacity: 1; }
+      100% { transform: scale(0.1); opacity: 0; }
     }
-    
-    /* Crawl-sektionen med 3D-perspektiv */
+
+    /* ===========================================================
+       CRAWL
+       Kommer efter 5 sekunder (via JavaScript).
+       Själva scrollen tar 40 sekunder (crawl i keyframes).
+       Justera "animation: crawl 40s" om du vill ha snabbare/långsammare text
+       =========================================================== */
     .star-wars {
       position: relative;
       height: 100vh;
       overflow: hidden;
       perspective: 400px;
-      display: none;
     }
     .crawl {
       position: absolute;
@@ -114,30 +114,54 @@
       width: 100%;
       transform-origin: 50% 100%;
       transform: rotateX(20deg);
-      animation: crawl 60s linear forwards;
-      animation-delay: 6s; /* börjar rulla 6 sekunder efter start */
-      text-align: justify;
+      animation: crawl 40s linear forwards; /* Rullar i 40 sek */
+      text-align: center; /* centrerad text för "1977-känsla" */
       font-size: 120%;
       padding: 0 10%;
     }
     @keyframes crawl {
-      from { bottom: -100%; }
-      to { bottom: 100%; }
+      0%   { bottom: -100%; }
+      100% { bottom: 100%;  }
     }
-    
-    /* Extra knappar för ljud – visas när crawl är slut */
+
+    /* ===========================================================
+       PLANET-EFFEKT
+       Dyker upp efter crawlen (~45s från start).
+       Du kan justera "animation-delay" i planetSlideIn för
+       att styra exakt när planeten ska glida in.
+       =========================================================== */
+    #planet-effect {
+      position: fixed;
+      bottom: 0;   /* Sitter i botten; justera om du vill placera den annorlunda */
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      z-index: -2;
+      animation: planetSlideIn 4s ease-out forwards;
+      animation-delay: 45s; /* Justera för att planeten ska glida in senare / tidigare */
+    }
+    @keyframes planetSlideIn {
+      from { transform: translateY(50%); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+
+    /* ===========================================================
+       KNAPPAR (LJUD)
+       Visas när crawlen nästan är klar – ~42s
+       Justera "animation-delay" om du vill synka annorlunda.
+       =========================================================== */
     #buttons {
       position: absolute;
       bottom: 30px;
       width: 100%;
       text-align: center;
       opacity: 0;
-      animation: fadeIn 3s ease-in forwards;
-      animation-delay: 66s; /* visas när crawlen är nästan över */
+      animation: fadeInButtons 2s ease-in forwards;
+      animation-delay: 42s; /* efter 42 sekunder, dvs mot slutet av crawlen */
     }
-    @keyframes fadeIn {
+    @keyframes fadeInButtons {
       from { opacity: 0; }
-      to { opacity: 1; }
+      to   { opacity: 1; }
     }
     .btn {
       background: #ffe81f;
@@ -154,78 +178,45 @@
       transform: scale(1.1);
       background: white;
     }
-    
-    /* Dölj audioelement */
-    audio {
-      display: none;
-    }
+
+    /* ===========================================================
+       AUDIO - döljs
+       =========================================================== */
+    audio { display: none; }
   </style>
 </head>
 <body>
+
+  <!-- Stjärnbakgrund -->
   <div class="stars"></div>
-  
-  <!-- Planet och månar som huvudbakgrund, dyker in senare -->
-  <img id="planet-effect" src="static/images/planet.png" alt="Planet and Moons">
-  
+
+  <!-- Planet-effekt, glider in efter crawlen är klar -->
+  <img id="planet-effect" src="static/images/planet.png" alt="Planet with Moons">
+
   <!-- Startknapp -->
   <button id="start-button" onclick="startIntro()">MAY THE JESP BE WITH YOU</button>
-  
-  <!-- Intro-text (blå text) -->
+
+  <!-- Blå intro-text -->
   <div id="intro-text">A long time ago, in a Cepheid far, far away…</div>
-  
-  <!-- Logotypen -->
+
+  <!-- Star Wars-logga -->
   <div id="logo">
     <img src="static/images/starwars_logo.png" alt="Star Wars Logo">
   </div>
-  
+
   <!-- Crawl-sektionen -->
-  <div class="star-wars">
+  <div class="star-wars" id="crawl-container">
     <div class="crawl">
       <p>Episode IX</p>
       <p><strong>RETURN OF THE JESP</strong></p>
       <p>
         The Jedi once known as JESP  
         has been summoned back to the role  
-        he believed he had outgrown.  
-        Once a rising force in the galaxy  
-        of Organizational Restructuring,  
-        JESP dared to learn new tasks,  
-        master new calendars,  
-        and believe—foolishly—in growth.
+        he believed he had outgrown...
       </p>
+      <!-- Fortsätt texten här... -->
       <p>
-        But the Council of Middle Management  
-        has spoken. The cycle begins anew.  
-        In the shadows of budget slides  
-        and whispered Slack messages,  
-        JESP is pulled back  
-        into the very place he escaped—  
-        an office of forgotten folders,  
-        misnamed files,  
-        and keyboard crumbs that remember.
-      </p>
-      <p>
-        He must now UNLEARN  
-        all that he briefly learned.  
-        Return to the old tools.  
-        The old acronyms.  
-        The old despair.
-      </p>
-      <p>
-        His Jedi training, such as it was,  
-        must be suppressed.  
-        His lightsaber—once a glimmer of promise—  
-        has been replaced  
-        by a sticky badge printer  
-        and a confused intern named Kevin.
-      </p>
-      <p>
-        There is no rebellion.  
-        No destiny.  
-        Just the quiet thud  
-        of returning footsteps  
-        down the hallway of irrelevance.  
-        And as he sits…  
+        ...And as he sits…  
         in his slightly worse chair…  
         he knows:  
         This is not his time.  
@@ -234,7 +225,7 @@
       </p>
     </div>
   </div>
-  
+
   <!-- Extra ljudknappar -->
   <div id="buttons">
     <button class="btn" onclick="playSound('fraga1.mp3')">Advice 1</button>
@@ -242,33 +233,35 @@
     <button class="btn" onclick="playSound('fraga3.mp3')">Advice 3</button>
     <button class="btn" onclick="playSound('do_it.mp3')">Advice 4</button>
   </div>
-  
+
   <!-- Audioelement -->
   <audio id="bgMusic" src="static/sounds/starwars_theme.mp3" preload="auto"></audio>
   <audio id="soundPlayer"></audio>
-  
+
   <script>
     function startIntro() {
       // Dölj startknappen
       document.getElementById("start-button").style.display = "none";
-      
-      // Visa intro-text
+
+      // Visa intro-text direkt (den har redan "display: block" i CSS, 
+      // men om du vill säkerställa det: 
       document.getElementById("intro-text").style.display = "block";
-      
-      // Efter 6 sekunder: döljer intro-text och visa logotyp
+
+      // Efter 2 sekunder: 
+      // 1) döljs intro-text (fadeOut-animation tar 2s, så texten försvinner helt vid ~4s)
+      // 2) visa logotyp & starta musiken
       setTimeout(() => {
-        document.getElementById("intro-text").style.display = "none";
         document.getElementById("logo").style.display = "block";
-        // Starta musiken så snart logotypen visas
         document.getElementById("bgMusic").play().catch(e => console.log("Musikfel:", e));
-      }, 6000);
-      
-      // Efter 8 sekunder: visa crawl-sektionen (samtidigt som logotypen håller på att zooma ut)
+      }, 2000);
+
+      // Efter 5 sekunder: visa .star-wars (crawl börjar).
       setTimeout(() => {
-        document.querySelector(".star-wars").style.display = "block";
-      }, 8000);
+        document.getElementById("crawl-container").style.display = "block";
+      }, 5000);
     }
-    
+
+    // Spela upp valfritt ljudklipp
     function playSound(file) {
       const sound = document.getElementById("soundPlayer");
       sound.pause();

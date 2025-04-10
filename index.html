@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>Return of the JESP</title>
   <style>
+    /*****************************************************
+     * BASINSTÄLLNINGAR & BAKGRUND
+     *****************************************************/
     body {
       margin: 0;
       overflow: hidden;
@@ -11,7 +14,6 @@
       color: #ffe81f;
       font-family: 'Courier New', Courier, monospace;
     }
-
     .stars {
       position: fixed;
       top: 0;
@@ -22,7 +24,10 @@
       background-size: cover;
       z-index: -99;
     }
-
+    
+    /*****************************************************
+     * NEDRÄKNING (överst)
+     *****************************************************/
     #countdown {
       position: fixed;
       top: 10px;
@@ -32,7 +37,10 @@
       z-index: 900;
       color: yellow;
     }
-
+    
+    /*****************************************************
+     * STARTKNAPP
+     *****************************************************/
     #start-button {
       position: absolute;
       top: 50%;
@@ -49,14 +57,17 @@
       transition: transform 0.2s;
       z-index: 1000;
     }
-
     #start-button:hover {
       transform: translate(-50%, -50%) scale(1.1);
       background: white;
     }
-
+    
+    /*****************************************************
+     * INTRO-TEXT (BLÅ)
+     * Visas direkt efter klick, synlig i ca 3s, fade:as ut under 2s
+     *****************************************************/
     #intro-text {
-      display: none;
+      display: none; /* Visas via JS */
       position: absolute;
       top: 40%;
       width: 100%;
@@ -66,65 +77,69 @@
       opacity: 1;
       z-index: 800;
       animation: fadeOut 2s ease-out forwards;
-      animation-delay: 3s;
+      animation-delay: 3s; /* Startar fade:ut efter 3s */
     }
-
     @keyframes fadeOut {
       from { opacity: 1; }
-      to { opacity: 0; }
+      to   { opacity: 0; }
     }
-
+    
+    /*****************************************************
+     * LOGOTYP
+     * Visas vid 5s; zoomar ut från 5 s till 9 s
+     *****************************************************/
     #logo {
-      display: none;
+      display: none; /* Visas vid 5s via JS */
       position: absolute;
       top: 30%;
       width: 100%;
       text-align: center;
       z-index: 850;
     }
-
     #logo img {
-      width: 70%;
+      width: 70%; /* Initial storlek, justera efter önskemål */
       opacity: 1;
       animation: logoZoom 4s ease-out forwards;
     }
-
     @keyframes logoZoom {
       from { transform: scale(1); opacity: 1; }
-      to { transform: scale(0.1); opacity: 0; }
+      to   { transform: scale(0.1); opacity: 0; }
     }
-
+    
+    /*****************************************************
+     * CRAWL
+     * Visas vid 9s, rullar upp under 21 s (9s - 30s)
+     *****************************************************/
     .star-wars {
-      display: none;
+      display: none; /* Visas via JS */
       position: relative;
       height: 100vh;
       overflow: hidden;
       perspective: 400px;
       z-index: 700;
     }
-
     .crawl {
       position: absolute;
       bottom: -100%;
-      width: 90%;
-      left: 5%;
+      width: 100%;
       transform-origin: 50% 100%;
-      transform: rotateX(25deg);
-      text-align: justify;
-      font-size: 1.2em;
-      line-height: 1.6em;
-      color: #ffe81f;
-      text-shadow: 0 0 5px #ffe81f, 0 0 10px #ffe81f;
-      animation: crawl 60s linear forwards;
+      transform: rotateX(20deg);
+      text-align: center;
+      font-size: 120%;
+      padding: 0 10%;
+      animation: crawl 20s linear forwards;
     }
-
     @keyframes crawl {
-      0% { bottom: -100%; opacity: 1; }
-      100% { bottom: 200%; opacity: 0; }
+      from { bottom: -100%; }
+      to   { bottom: 100%; }
     }
-
+    
+    /*****************************************************
+     * CENTRALT TITLE-ELEMENT ("The Return of the JESP")
+     * Visas vid 30s (efter crawlen) och stannar
+     *****************************************************/
     #main-title {
-      display: none;
+      display: none; /* Visas via JS */
       position: absolute;
       top: 40%;
       width: 100%;
@@ -135,36 +150,34 @@
       z-index: 860;
       animation: fadeInTitle 2s ease-out forwards;
     }
-
     @keyframes fadeInTitle {
       from { opacity: 0; }
-      to { opacity: 1; }
+      to   { opacity: 1; }
     }
-
+    
+    /*****************************************************
+     * PLANET-EFFEKT
+     * Visas vid 30s, glider in över 4 s (30s - 34s)
+     *****************************************************/
     #planet-effect {
       position: fixed;
-      bottom: -40%;
-      left: 50%;
-      transform: translateX(-50%);
+      bottom: 0;
+      left: 0;
       width: 100%;
       opacity: 0;
       z-index: -2;
-      filter: drop-shadow(0 0 10px #ffe81f);
       animation: planetSlideIn 4s ease-out forwards;
       animation-delay: 30s;
     }
-
     @keyframes planetSlideIn {
-      from {
-        transform: translate(-50%, 50%);
-        opacity: 0;
-      }
-      to {
-        transform: translate(-50%, 0%);
-        opacity: 1;
-      }
+      from { transform: translateY(50%); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
     }
-
+    
+    /*****************************************************
+     * LJUDKNAPPAR (FRÅGOR)
+     * Fade:as in sist, vid ca 33s
+     *****************************************************/
     #buttons {
       display: none;
       position: absolute;
@@ -176,12 +189,10 @@
       animation: fadeInButtons 2s ease-in forwards;
       animation-delay: 33s;
     }
-
     @keyframes fadeInButtons {
       from { opacity: 0; }
-      to { opacity: 1; }
+      to   { opacity: 1; }
     }
-
     .btn {
       background: #ffe81f;
       border: none;
@@ -193,130 +204,172 @@
       transition: transform 0.3s ease-in-out, background 0.3s;
       border-radius: 8px;
     }
-
     .btn:hover {
       transform: scale(1.1);
       background: white;
     }
-
+    
+    /*****************************************************
+     * AUDIO
+     *****************************************************/
     audio { display: none; }
-
-    @media (max-width: 768px) {
-      .crawl {
-        font-size: 1em;
-        padding: 0 5%;
-      }
-      #start-button {
-        font-size: 1.2em;
-        padding: 15px 30px;
-      }
-      #main-title {
-        font-size: 2em;
-      }
-      .btn {
-        font-size: 0.9em;
-        padding: 10px 15px;
-      }
-    }
   </style>
 </head>
 <body>
+  <!-- Bakgrund: Stjärnhimmel -->
   <div class="stars"></div>
+  
+  <!-- Countdown: syns överst, från start -->
   <div id="countdown"></div>
+  
+  <!-- Startknapp -->
   <button id="start-button" onclick="startIntro()">MAY THE JESP BE WITH YOU</button>
+  
+  <!-- Intro-text (blå) -->
   <div id="intro-text">A long time ago, in a Cepheid far, far away…</div>
+  
+  <!-- Logotyp (Star Wars-logga) -->
   <div id="logo">
     <img src="static/images/starwars_logo.png" alt="Star Wars Logo">
   </div>
-
+  
+  <!-- Crawl-sektionen -->
   <div class="star-wars" id="crawl-container">
     <div class="crawl" id="crawl-text">
       <p>Episode XX</p>
       <p><strong>RETURN OF THE JESP</strong></p>
-      <p>The Jedi Knight known only as JESP has been summoned back from self-imposed exile by the FIRST ORDER.</p>
-      <p>After vanishing without a trace, JESP was secretly captured by the sinister GURULAB.</p>
-      <p>The once-promising Jedi has now escaped and crash-landed on his home planet of BROWSKIS.</p>
-      <p>There, alongside the fierce Jedi Knights VDAO and ELS, young JESP must once again board the Milliliter Falcon Tube — a vessel fully equipped for the mission ahead. Unfortunately, JESP is not.</p>
-      <p>He cannot read a star map. He thinks “agile” is a species. He brought a spoon to a lightsaber duel.</p>
-      <p>His Jedi training, such as it was, must be suppressed. His lightsaber has been replaced by a sticky badge printer and a confused intern named Kevin.</p>
-      <p>Meanwhile, Senator TUKA, obsessed with locating JESP, has dispatched thousands of remote probes into the far reaches of space. Not to rescue him - but to uncover the full extent of his ignorance.</p>
-      <p>Unaware of the trials to come, JESP must now UNLEARN all that he once tried to learn.</p>
-      <p>The fate of the galaxy may hang in the balance… but mostly, it’s just hoping he stays out of the way.</p>
+      <p>
+        The Jedi Knight known only as JESP has been summoned back from self-imposed exile by the FIRST ORDER.
+      </p>
+      <p>
+        After vanishing without a trace, JESP was secretly captured by the sinister GURULAB.
+        The once-promising Jedi has now escaped and crash-landed on his home planet of BROWSKIS.
+      </p>
+      <p>
+        There, alongside the fierce Jedi Knights VDAO and ELS, young JESP must once again board the  
+        Milliliter Falcon Tube — a vessel fully equipped for the mission ahead. Unfortunately, JESP is not.
+        He cannot read a star map. He thinks “agile” is a species. He brought a spoon to a lightsaber duel.
+      </p>
+      <p>
+        His Jedi training, such as it was, must be suppressed.
+        His lightsaber has been replaced by a sticky badge printer and a confused intern named Kevin.
+      </p>
+      <p>
+        Meanwhile, Senator TUKA, obsessed with locating JESP, has dispatched thousands of remote probes  
+        into the far reaches of space. Not to rescue him - but to uncover the full extent of his ignorance.
+      </p>
+       <p>
+        Unaware of the trials to come, JESP must now UNLEARN all that he once tried to learn.
+      </p>
+      <p>
+        The fate of the galaxy may hang in the balance… but mostly, it’s just hoping he stays out of the way.
+      </p>
     </div>
   </div>
-
+  
+  <!-- Centralt Title-element ("The Return of the JESP") – visas efter crawl -->
   <div id="main-title">The Return of the JESP</div>
+  
+  <!-- Planet-effekt (PNG med transparent bakgrund) -->
   <img id="planet-effect" src="static/images/planet.png" alt="Planet with Moons">
-
+  
+  <!-- Ljudknappar (för ytterligare uppspelning) -->
   <div id="buttons">
     <button class="btn" onclick="playSound('fraga1.mp3')">How?</button>
     <button class="btn" onclick="playSound('fraga2.mp3')">When?</button>
     <button class="btn" onclick="playSound('fraga3.mp3')">Why?</button>
     <button class="btn" onclick="playSound('do_it.mp3')">What?</button>
   </div>
-
+  
+  <!-- Audioelement -->
   <audio id="bgMusic" src="static/sounds/starwars_theme.mp3" preload="auto"></audio>
   <audio id="soundPlayer"></audio>
-
+  
   <script>
+    /*****************************************************
+     * NEDRÄKNING TILL 30 APRIL 2025
+     *****************************************************/
     function startCountdown() {
-      const targetDate = new Date("2025-04-30T00:00:00").getTime();
-      const countdownEl = document.getElementById("countdown");
+      var targetDate = new Date("2025-04-30T00:00:00").getTime();
+      var countdownEl = document.getElementById("countdown");
       function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
+        var now = new Date().getTime();
+        var distance = targetDate - now;
         if (distance < 0) {
           countdownEl.innerHTML = "JESP TIME!";
-          clearInterval(interval);
+          clearInterval(countdownInterval);
           return;
         }
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        countdownEl.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
       }
       updateCountdown();
-      const interval = setInterval(updateCountdown, 1000);
+      var countdownInterval = setInterval(updateCountdown, 1000);
     }
 
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function startIntro() {
+    /*****************************************************
+     * INTRO-SEKVENS (tidslinje)
+     *****************************************************/
+    function startIntro() {
+      // 1. Dölj startknappen
       document.getElementById("start-button").style.display = "none";
+      
+      // 2. Starta nedräkningen (visas från början)
       startCountdown();
-
-      const introText = document.getElementById("intro-text");
+      
+      // 3. Visa intro-text (blå) direkt
+      var introText = document.getElementById("intro-text");
       introText.style.display = "block";
-
-      await sleep(5000);
-      introText.style.display = "none";
-
-      const logo = document.getElementById("logo");
-      logo.style.display = "block";
-      document.getElementById("bgMusic").play().catch(e => console.log("Musikfel:", e));
-
-      await sleep(4000);
-      logo.style.display = "none";
-
-      const crawlContainer = document.getElementById("crawl-container");
-      crawlContainer.style.display = "block";
-
-      await sleep(21000);
-      crawlContainer.style.display = "none";
-
-      const mainTitle = document.getElementById("main-title");
-      mainTitle.style.display = "block";
-
-      await sleep(3000);
-      const buttons = document.getElementById("buttons");
-      buttons.style.display = "block";
+      
+      // Intro-text är synlig ca 3 s, fadeas ut med CSS (total ca 5s)
+      setTimeout(function() {
+        introText.style.display = "none";
+      }, 5000);
+      
+      // 4. Vid 5 s: Visa logotyp & starta bakgrundsmusik
+      setTimeout(function() {
+        var logo = document.getElementById("logo");
+        logo.style.display = "block";
+        // Starta bakgrundsmusik
+        document.getElementById("bgMusic").play().catch(e => console.log("Musikfel:", e));
+      }, 5000);
+      
+      // 5. Vid 9 s: Dölj logotyp, visa crawl-sektionen
+      setTimeout(function() {
+        document.getElementById("logo").style.display = "none";
+        var crawlContainer = document.getElementById("crawl-container");
+        crawlContainer.style.display = "block";
+        // Starta crawl-animationen (20 s varaktighet: 9s till 29s)
+        document.getElementById("crawl-text").style.animation = "crawl 20s linear forwards";
+      }, 9000);
+      
+      // 6. Vid 30 s: Dölj crawl, visa centralt title-element ("The Return of the JESP")
+      setTimeout(function() {
+        document.getElementById("crawl-container").style.display = "none";
+        var mainTitle = document.getElementById("main-title");
+        mainTitle.style.display = "block";
+        mainTitle.style.animation = "fadeInTitle 2s ease-out forwards";
+      }, 30000);
+      
+      // 7. Vid 30 s: Samtidigt triggas planet-effekten (planet glider in)
+      //    (Animation delay i CSS i #planet-effect)
+      
+      // 8. Vid 30 s: Visa ljudknappar (fade:as in)
+      setTimeout(function() {
+        var buttons = document.getElementById("buttons");
+        buttons.style.display = "block";
+        buttons.style.animation = "fadeInButtons 2s ease-in forwards";
+      }, 33000);
     }
 
+    /*****************************************************
+     * SPELA LJUD (för knappar)
+     *****************************************************/
     function playSound(file) {
-      const sound = document.getElementById("soundPlayer");
+      var sound = document.getElementById("soundPlayer");
       sound.pause();
       sound.currentTime = 0;
       sound.src = `static/sounds/${file}`;

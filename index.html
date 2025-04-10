@@ -108,7 +108,7 @@
     
     /*****************************************************
      * CRAWL
-     * Visas vid 9s, rullar upp under 20 s (9s - 29s)
+     * Visas vid 9s, rullar upp under 21 s (9s - 30s)
      *****************************************************/
     .star-wars {
       display: none; /* Visas via JS */
@@ -136,7 +136,7 @@
     
     /*****************************************************
      * CENTRALT TITLE-ELEMENT ("The Return of the JESP")
-     * Visas vid 29s (efter crawlen) och stannar
+     * Visas vid 30s (efter crawlen) och stannar
      *****************************************************/
     #main-title {
       display: none; /* Visas via JS */
@@ -157,7 +157,7 @@
     
     /*****************************************************
      * PLANET-EFFEKT
-     * Visas vid 29s, glider in över 4 s (29s - 33s)
+     * Visas vid 30s, glider in över 4 s (30s - 34s)
      *****************************************************/
     #planet-effect {
       position: fixed;
@@ -167,7 +167,7 @@
       opacity: 0;
       z-index: -2;
       animation: planetSlideIn 4s ease-out forwards;
-      animation-delay: 29s;
+      animation-delay: 30s;
     }
     @keyframes planetSlideIn {
       from { transform: translateY(50%); opacity: 0; }
@@ -275,10 +275,10 @@
   
   <!-- Ljudknappar (för ytterligare uppspelning) -->
   <div id="buttons">
-    <button class="btn" onclick="playSound('fraga1.mp3')">Advice 1</button>
-    <button class="btn" onclick="playSound('fraga2.mp3')">Advice 2</button>
-    <button class="btn" onclick="playSound('fraga3.mp3')">Advice 3</button>
-    <button class="btn" onclick="playSound('do_it.mp3')">Advice 4</button>
+    <button class="btn" onclick="playSound('fraga1.mp3')">How?</button>
+    <button class="btn" onclick="playSound('fraga2.mp3')">When?</button>
+    <button class="btn" onclick="playSound('fraga3.mp3')">Why?</button>
+    <button class="btn" onclick="playSound('do_it.mp3')">What?</button>
   </div>
   
   <!-- Audioelement -->

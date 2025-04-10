@@ -23,28 +23,20 @@
       z-index: -3;
     }
     
-    /* PNG-effekt: Planet med månar */
+    /* Planet och månar – ska dyka in som huvudbakgrund efter crawl */
     #planet-effect {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      max-width: 100%;
       opacity: 0;
       z-index: -2;
-      animation: planetRise 10s ease-out forwards;
-      animation-delay: 5s;
+      animation: planetSlideIn 5s ease-out forwards;
+      animation-delay: 75s; /* Dyker in när crawl är färdig */
     }
-    
-    @keyframes planetRise {
-      from {
-        transform: translateY(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    @keyframes planetSlideIn {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
     }
     
     /* Startknapp */
@@ -74,43 +66,47 @@
       display: none;
     }
     
-    /* Intro-text med fadeOut */
+    /* Intro-text (blå text) visas längre innan den försvinner */
     #intro-text {
       position: absolute;
       width: 100%;
       top: 40%;
       text-align: center;
-      font-size: 1.8em;
+      font-size: 2em;
       color: #4ee;
       animation: fadeOut 3s ease-out forwards;
+      animation-delay: 6s; /* visas 6 sekunder innan den fadas ut */
     }
     @keyframes fadeOut {
       from { opacity: 1; }
       to { opacity: 0; }
     }
     
-    /* Logotypen – skala ut och tona ut */
+    /* Logotypen: visas först stort, zoomar ut långsamt */
     #logo {
       position: absolute;
       top: 30%;
       width: 100%;
       text-align: center;
-      animation: scaleAndFade 6s ease-out forwards;
+      display: none;
     }
     #logo img {
-      width: 40%;
+      width: 80%;  /* större initialt */
+      animation: logoZoom 5s ease-out forwards;
+      animation-delay: 4s; /* startar zoomning 4 sekunder in */
     }
-    @keyframes scaleAndFade {
-      0% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.1); }
+    @keyframes logoZoom {
+      from { transform: scale(1); opacity: 1; }
+      to { transform: scale(0.1); opacity: 0; }
     }
     
-    /* Crawl-container med 3D-perspektiv */
+    /* Crawl-sektionen med 3D-perspektiv */
     .star-wars {
       position: relative;
       height: 100vh;
       overflow: hidden;
       perspective: 400px;
+      display: none;
     }
     .crawl {
       position: absolute;
@@ -118,17 +114,18 @@
       width: 100%;
       transform-origin: 50% 100%;
       transform: rotateX(20deg);
-      animation: crawl 70s linear forwards;
+      animation: crawl 60s linear forwards;
+      animation-delay: 6s; /* börjar rulla 6 sekunder efter start */
       text-align: justify;
       font-size: 120%;
       padding: 0 10%;
     }
     @keyframes crawl {
-      0% { bottom: -100%; }
-      100% { bottom: 100%; }
+      from { bottom: -100%; }
+      to { bottom: 100%; }
     }
     
-    /* Knappcontainer för extra ljudklipp */
+    /* Extra knappar för ljud – visas när crawl är slut */
     #buttons {
       position: absolute;
       bottom: 30px;
@@ -136,7 +133,7 @@
       text-align: center;
       opacity: 0;
       animation: fadeIn 3s ease-in forwards;
-      animation-delay: 70s;  /* Justera så att knapparna visas när crawlen är slut */
+      animation-delay: 66s; /* visas när crawlen är nästan över */
     }
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -165,23 +162,23 @@
   </style>
 </head>
 <body>
-  <!-- Bakgrund -->
   <div class="stars"></div>
-  <!-- PNG-effekt: Planet och månar -->
-  <img id="planet-effect" src="static/images/planet.png" alt="Planet & Månar">
+  
+  <!-- Planet och månar som huvudbakgrund, dyker in senare -->
+  <img id="planet-effect" src="static/images/planet.png" alt="Planet and Moons">
   
   <!-- Startknapp -->
   <button id="start-button" onclick="startIntro()">MAY THE JESP BE WITH YOU</button>
   
-  <!-- Intro-text -->
+  <!-- Intro-text (blå text) -->
   <div id="intro-text">A long time ago, in a Cepheid far, far away…</div>
   
-  <!-- Logotyp -->
+  <!-- Logotypen -->
   <div id="logo">
     <img src="static/images/starwars_logo.png" alt="Star Wars Logo">
   </div>
   
-  <!-- Crawl -->
+  <!-- Crawl-sektionen -->
   <div class="star-wars">
     <div class="crawl">
       <p>Episode IX</p>
@@ -238,7 +235,7 @@
     </div>
   </div>
   
-  <!-- Extra Ljudknappar -->
+  <!-- Extra ljudknappar -->
   <div id="buttons">
     <button class="btn" onclick="playSound('fraga1.mp3')">Advice 1</button>
     <button class="btn" onclick="playSound('fraga2.mp3')">Advice 2</button>
@@ -255,24 +252,21 @@
       // Dölj startknappen
       document.getElementById("start-button").style.display = "none";
       
-      // Visa intro-text direkt
+      // Visa intro-text
       document.getElementById("intro-text").style.display = "block";
       
-      // Efter 3 sekunder: döljer intro-text, visa logotyp, och starta bakgrundsmusik
+      // Efter 6 sekunder: döljer intro-text och visa logotyp
       setTimeout(() => {
         document.getElementById("intro-text").style.display = "none";
         document.getElementById("logo").style.display = "block";
-        var bgMusic = document.getElementById("bgMusic");
-        bgMusic.play().catch(e => console.log("Musikfel:", e));
-      }, 3000);
+        // Starta musiken så snart logotypen visas
+        document.getElementById("bgMusic").play().catch(e => console.log("Musikfel:", e));
+      }, 6000);
       
-      /* Justera crawl-timingen: 
-         Vi vill att crawlen börjar rulla medan logotypen fortfarande är synlig (när den är under animation)
-         så vi visar crawl-sektionen tidigare, t.ex. efter 6 sekunder.
-      */
+      // Efter 8 sekunder: visa crawl-sektionen (samtidigt som logotypen håller på att zooma ut)
       setTimeout(() => {
         document.querySelector(".star-wars").style.display = "block";
-      }, 6000);
+      }, 8000);
     }
     
     function playSound(file) {

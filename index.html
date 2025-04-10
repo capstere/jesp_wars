@@ -236,28 +236,33 @@
   <!-- Crawl-sektionen -->
   <div class="star-wars" id="crawl-container">
     <div class="crawl" id="crawl-text">
-      <p>Episode IX</p>
+      <p>Episode XX</p>
       <p><strong>RETURN OF THE JESP</strong></p>
       <p>
-        The Jedi once known as JESP has been summoned back to the role he believed he had outgrown.
+        The Jedi Knight known only as JESP has been summoned back from self-imposed exile by the FIRST ORDER.
       </p>
       <p>
-        But the Council of Middle Management has spoken. In the shadows of budget slides and whispered Slack messages,
-        JESP is pulled back into the office of forgotten folders.
+        After vanishing without a trace, JESP was secretly captured by the sinister GURULAB.
+        The once-promising Jedi has now escaped and crash-landed on his home planet of BROWSKIS.
       </p>
       <p>
-        He must now UNLEARN all that he briefly learned, return to the old tools,
-        the old acronyms, the old despair.
+        There, alongside the fierce Jedi Knights VDAO and ELS, young JESP must once again board the  
+        Milliliter Falcon Tube — a vessel fully equipped for the mission ahead. Unfortunately, JESP is not.
+        He cannot read a star map. He thinks “agile” is a species. He brought a spoon to a lightsaber duel.
       </p>
       <p>
         His Jedi training, such as it was, must be suppressed.
         His lightsaber has been replaced by a sticky badge printer and a confused intern named Kevin.
       </p>
       <p>
-        There is no rebellion. No destiny.
-        Just the quiet thud of returning footsteps down the hallway of irrelevance.
-        And as he sits in his slightly worse chair, he knows:
-        This is not his time. But it is, unfortunately, his shift.
+        Meanwhile, Senator TUKA, obsessed with locating JESP, has dispatched thousands of remote probes  
+        into the far reaches of space. Not to rescue him - but to uncover the full extent of his ignorance.
+      </p>
+       <p>
+        Unaware of the trials to come, JESP must now UNLEARN all that he once tried to learn.
+      </p>
+      <p>
+        The fate of the galaxy may hang in the balance… but mostly, it’s just hoping he stays out of the way.
       </p>
     </div>
   </div>
@@ -341,18 +346,18 @@
         document.getElementById("crawl-text").style.animation = "crawl 20s linear forwards";
       }, 9000);
       
-      // 6. Vid 29 s: Dölj crawl, visa centralt title-element ("The Return of the JESP")
+      // 6. Vid 30 s: Dölj crawl, visa centralt title-element ("The Return of the JESP")
       setTimeout(function() {
         document.getElementById("crawl-container").style.display = "none";
         var mainTitle = document.getElementById("main-title");
         mainTitle.style.display = "block";
         mainTitle.style.animation = "fadeInTitle 2s ease-out forwards";
-      }, 29000);
+      }, 30000);
       
-      // 7. Vid 29 s: Samtidigt triggas planet-effekten (planet glider in)
+      // 7. Vid 30 s: Samtidigt triggas planet-effekten (planet glider in)
       //    (Animation delay i CSS i #planet-effect)
       
-      // 8. Vid 33 s: Visa ljudknappar (fade:as in)
+      // 8. Vid 30 s: Visa ljudknappar (fade:as in)
       setTimeout(function() {
         var buttons = document.getElementById("buttons");
         buttons.style.display = "block";

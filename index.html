@@ -4,15 +4,13 @@
   <meta charset="UTF-8">
   <title>Return of the JESP</title>
   <style>
-    /******************************************************
-     * BASINSTÄLLNINGAR & BAKGRUND
-     ******************************************************/
+    /* BASINSTÄLLNINGAR & BAKGRUND */
     body {
       margin: 0;
       overflow: hidden;
       background: black;
-      color: #ffe81f;
       font-family: 'Courier New', Courier, monospace;
+      color: #ffe81f;
     }
     .stars {
       position: fixed;
@@ -20,15 +18,12 @@
       left: 0;
       width: 100%;
       height: 100%;
-      /* Kontrollera att denna bild finns – ändra filnamn om nödvändigt */
       background: black url('static/images/stars.jpeg') repeat;
       background-size: cover;
-      z-index: -99;
+      z-index: -1;
     }
 
-    /******************************************************
-     * NEDRÄKNING (överst)
-     ******************************************************/
+    /* NEDRÄKNING (överst på skärmen) */
     #countdown {
       position: fixed;
       top: 10px;
@@ -39,15 +34,13 @@
       color: yellow;
     }
 
-    /******************************************************
-     * STARTKNAPP
-     ******************************************************/
+    /* STARTKNAPP */
     #start-button {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 1.8em;
+      font-size: 2em;
       padding: 20px 40px;
       background-color: #ffe81f;
       color: black;
@@ -63,9 +56,7 @@
       background: white;
     }
 
-    /******************************************************
-     * INTRO-TEXT (BLÅ)
-     ******************************************************/
+    /* INTRO-TEXT (BLÅ) */
     #intro-text {
       display: none;
       position: absolute;
@@ -75,128 +66,80 @@
       font-size: 2em;
       color: #4ee;
       z-index: 800;
+      /* Använder en fade-out animation (varar i 2 sekunder, startar efter 3 sekunder) */
       animation: fadeOut 2s ease-out forwards;
-      animation-delay: 3s; /* börjar fade ut efter 3 s, totalt ca 5 s innan borta */
+      animation-delay: 3s;
     }
     @keyframes fadeOut {
       from { opacity: 1; }
       to { opacity: 0; }
     }
 
-    /******************************************************
-     * LOGOTYP – FULLOMSLUTANDE OCH FILMCIK EFFKT
-     * Logotypen ska fylla skärmen (100% bredd) och sedan zooma ut med en translation
-     ******************************************************/
+    /* LOGOTYP */
     #logo {
       display: none;
       position: absolute;
-      top: 0; /* Logotypen tar hela skärmen initialt */
-      width: 100%;
-      height: 100vh; /* Full höjd */
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       text-align: center;
       z-index: 850;
     }
     #logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Se till att bilden fyller behållaren */
-      opacity: 1;
-      animation: logoZoomOut 4s ease-out forwards;
+      max-width: 100%;
+      max-height: 100%;
+      /* Direkt visas utan fade-in – zoomar ut under animationen */
+      animation: logoZoomOut 4s linear forwards;
     }
     @keyframes logoZoomOut {
       0% { transform: scale(1) translateY(0); opacity: 1; }
       100% { transform: scale(0.1) translateY(-100vh); opacity: 0; }
     }
 
-    /******************************************************
-     * CENTRALT TITLE-ELEMENT ("The Return of the JESP")
-     * Detta element visas efter crawlen
-     ******************************************************/
-    #main-title {
+    /* CRAWL (Star Wars-stil) */
+    #crawl-container {
       display: none;
-      position: absolute;
-      top: 40%;
+      position: fixed;
+      bottom: 0;
       width: 100%;
-      text-align: center;
-      font-size: 3.5em;
-      color: #ffe81f;
-      opacity: 0;
-      z-index: 860;
-      animation: fadeInTitle 2s ease-out forwards;
-    }
-    @keyframes fadeInTitle {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /******************************************************
-     * CRAWL (Star Wars-stil)
-     * - Crawl-texten ska inte börja direkt i mitten.  
-     *   Vi vill att den börjar från en låg position, uppifrån, och att den fyller större delen av skärmen.
-     * - Justera font-storlek, bredd och padding för en "fyrkantig" layout.
-     ******************************************************/
-    .star-wars {
-      display: none;
-      position: relative;
-      height: 100vh;
+      height: 100%;
       overflow: hidden;
       perspective: 800px;
       z-index: 700;
+      pointer-events: none;
     }
-    .crawl {
+    #crawl-text {
       position: absolute;
       bottom: -100%;
       width: 100%;
       transform-origin: 50% 100%;
       transform: rotateX(25deg);
-      text-align: center;
-      font-size: 2.5em;  /* Ökad storlek */
-      line-height: 1.8em;
+      text-align: justify;
+      font-size: 2.5em;
+      line-height: 1.6em;
       color: #ffe81f;
-      padding: 0 5%;
       text-shadow: 2px 2px 8px #ffe81f, 0 0 10px #ffe81f;
-      animation: crawl 20s linear forwards;
+      /* Crawl-animation: rullar från botten till toppen, med gradvis fade ut i slutet */
+      animation: crawlAnim 25s linear forwards;
     }
-    @keyframes crawl {
-      from { bottom: -100%; opacity: 1; }
-      to { bottom: 100%; opacity: 0; }
-    }
-
-    /******************************************************
-     * PLANET-EFFEKT (PNG)
-     * - Kommer högre upp (vi sätter bottom till 0%)
-     * - Ingen drop-shadow.
-     ******************************************************/
-    #planet-effect {
-      display: none;
-      position: fixed;
-      bottom: 0%; /* Ändrad från tidigare värde för att komma högre */
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      opacity: 0;
-      z-index: -2;
-      animation: planetSlideIn 3s ease-out forwards;
-      animation-delay: 24s;
-    }
-    @keyframes planetSlideIn {
-      from { transform: translate(-50%, 50%); opacity: 0; }
-      to { transform: translate(-50%, 0); opacity: 1; }
+    @keyframes crawlAnim {
+      0% { bottom: -100%; opacity: 1; }
+      80% { bottom: 90%; opacity: 1; }
+      100% { bottom: 100%; opacity: 0; }
     }
 
-    /******************************************************
-     * LJUDKNAPPAR (FRÅGOR)
-     ******************************************************/
+    /* ADVICE-KNAPPAR */
     #buttons {
       display: none;
-      position: absolute;
+      position: fixed;
       bottom: 30px;
       width: 100%;
       text-align: center;
+      z-index: 1000;
       opacity: 0;
-      z-index: 800;
       animation: fadeInButtons 2s ease-in forwards;
-      animation-delay: 27s;
+      animation-delay: 30s;
     }
     @keyframes fadeInButtons {
       from { opacity: 0; }
@@ -218,91 +161,101 @@
       background: white;
     }
 
-    /******************************************************
-     * AUDIO (dolt)
-     ******************************************************/
+    /* AUDIO (dolt) */
     audio { display: none; }
   </style>
 </head>
 <body>
-  <!-- Stjärnbakgrund -->
   <div class="stars"></div>
 
-  <!-- Nedräkning (överst) -->
+  <!-- Nedräkning -->
   <div id="countdown"></div>
 
   <!-- Startknapp -->
   <button id="start-button" onclick="startIntro()">MAY THE JESP BE WITH YOU</button>
 
   <!-- Intro-text (blå) -->
-  <div id="intro-text">A long time ago, in a Cepheid far,
-                        far away…</div>
+  <div id="intro-text">A long time ago, in a Cepheid far, far away…</div>
 
-  <!-- Logotypen -->
+  <!-- Logotyp (visas direkt utan fade in) -->
   <div id="logo">
-    <img src="static/images/starwars_logo.svg" alt="Star Wars Logo">
+    <img src="static/images/starwars_logo.png" alt="Star Wars Logo">
   </div>
 
-  <!-- Centralt Title-element -->
-  <div id="main-title">The Return of the JESP</div>
-
-  <!-- Crawl-sektionen -->
-  <div class="star-wars" id="crawl-container">
-    <div class="crawl" id="crawl-text">
-      <p style="text-align: center; margin: 0;"><strong>EPISODE XX</strong></p>
-      <p style="text-align: center; margin: 0;"><strong>RETURN OF THE JESP</strong></p>
+  <!-- Crawl-text -->
+  <div id="crawl-container">
+    <div id="crawl-text">
+      <p style="text-align:center; margin:0;"><strong>EPISODE IX</strong></p>
+      <p style="text-align:center; margin:0;"><strong>RETURN OF THE JESP</strong></p>
       <p>
-        The Jedi Knight known only as JESP has been summoned back from self-imposed exile by the FIRST ORDER.
+        The Jedi once known as JESP<br>
+        has been summoned back to the role<br>
+        he believed he had outgrown.<br>
+        Once a rising force in the galaxy<br>
+        of Organizational Restructuring,<br>
+        JESP dared to learn new tasks,<br>
+        master new calendars,<br>
+        and believe—foolishly—in growth.
       </p>
       <p>
-        After vanishing without a trace, JESP was secretly captured by the sinister GURULAB.
+        But the Council of Middle Management<br>
+        has spoken. The cycle begins anew.<br>
+        In the shadows of budget slides<br>
+        and whispered Slack messages,<br>
+        JESP is pulled back<br>
+        into the very place he escaped—<br>
+        an office of forgotten folders,<br>
+        misnamed files,<br>
+        and keyboard crumbs that remember.
       </p>
       <p>
-        The once-promising Jedi has now escaped and crash-landed on his home planet of BROWSKIS.
+        He must now UNLEARN<br>
+        all that he briefly learned.<br>
+        Return to the old tools.<br>
+        The old acronyms.<br>
+        The old despair.<br>
+        His Jedi training, such as it was,<br>
+        must be suppressed.<br>
+        His lightsaber—once a glimmer of promise—<br>
+        has been replaced<br>
+        by a sticky badge printer<br>
+        and a confused intern named Kevin.
       </p>
       <p>
-        Alongside fierce allies, young JESP must board the Milliliter Falcon Tube—a vessel fully equipped for the mission ahead. Unfortunately, JESP is not.
-      </p>
-      <p>
-        He cannot read a star map. He thinks "agile" is a species. He brought a spoon to a lightsaber duel.
-      </p>
-      <p>
-        His Jedi training, as it was, must be suppressed. His journey has been static, but the corner of LABITULATE shelters him.
-      </p>
-      <p>
-        Meanwhile, Senator TATU has dispatched remote probes into the far reaches of space—not to rescue him, but to uncover his ignorance.
-      </p>
-      <p>
-        Unaware of the trials to come, JESP must now UNLEARN all that he once tried to learn.
-      </p>
-      <p>
-        The fate of the galaxy may hang in the balance… but mostly, it's just hoping he stays out of the way.
+        There is no rebellion.<br>
+        No destiny.<br>
+        Just the quiet thud<br>
+        of returning footsteps<br>
+        down the hallway of irrelevance.<br>
+        And as he sits…<br>
+        in his slightly worse chair…<br>
+        he knows:<br>
+        This is not his time.<br>
+        But it is, unfortunately,<br>
+        his shift.
       </p>
     </div>
   </div>
 
-  <!-- Planet-effekt (utan drop-shadow) -->
-  <img id="planet-effect" src="static/images/planet.png" alt="Planet with Moons">
-
-  <!-- Ljudknappar -->
+  <!-- Advice-knappar -->
   <div id="buttons">
-    <button class="btn" onclick="playSound('fraga1.mp3')">How?</button>
-    <button class="btn" onclick="playSound('fraga2.mp3')">When?</button>
-    <button class="btn" onclick="playSound('fraga3.mp3')">Why?</button>
-    <button class="btn" onclick="playSound('do_it.mp3')">What?</button>
+    <button class="btn" onclick="playSound('fraga1.mp3')">Advice 1</button>
+    <button class="btn" onclick="playSound('fraga2.mp3')">Advice 2</button>
+    <button class="btn" onclick="playSound('fraga3.mp3')">Advice 3</button>
+    <button class="btn" onclick="playSound('do_it.mp3')">Advice 4</button>
   </div>
 
-  <!-- Audioelement -->
+  <!-- Audio-element -->
   <audio id="bgMusic" src="static/sounds/starwars_theme.mp3" preload="auto"></audio>
   <audio id="soundPlayer" preload="auto"></audio>
 
   <script>
-    // Sleep-funktion med Promise (använd async/await)
+    // Helper function för att pausa (async sleep)
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    // Nedräkning – startas direkt
+    // Startar nedräkningen (visas överst)
     function startCountdown() {
       const targetDate = new Date("2025-05-01T00:00:00").getTime();
       const countdownEl = document.getElementById("countdown");
@@ -310,7 +263,7 @@
         const now = new Date().getTime();
         const distance = targetDate - now;
         if (distance < 0) {
-          countdownEl.innerHTML = "JESP TIME!";
+          countdownEl.innerHTML = "🎉 JESP TIME!";
           clearInterval(interval);
           return;
         }
@@ -324,72 +277,55 @@
       const interval = setInterval(updateCountdown, 1000);
     }
 
-    // Huvudsekvensen med async/await
     async function startIntro() {
-      // 1. Dölj startknappen
+      // Dölj startknappen
       document.getElementById("start-button").style.display = "none";
-      
-      // 2. Starta nedräkningen
+      // Starta nedräkningen
       startCountdown();
-      
-      // 3. Visa intro-text (blå) – syns ca 5 s
+
+      // Visa intro-text (blå) i 5 s (3 s synlig + 2 s fade-out)
       const introText = document.getElementById("intro-text");
       introText.style.display = "block";
       await sleep(5000);
       introText.style.display = "none";
-      
-      // 4. Vid 5 s: Visa logotyp (fullskärm) + starta bakgrundsmusik
+
+      // Visa logotypen vid 5 s
       const logo = document.getElementById("logo");
       logo.style.display = "block";
+      // Starta musiken exakt då
       const bgMusic = document.getElementById("bgMusic");
-      bgMusic.load();
       bgMusic.volume = 1.0;
       bgMusic.currentTime = 0;
       try {
         await bgMusic.play();
       } catch (e) {
-        console.log("Musikfel vid första försöket:", e);
-        setTimeout(() => bgMusic.play().catch(e2 => console.log("Musikfel vid andra försöket:", e2)), 100);
-        setTimeout(() => bgMusic.play().catch(e3 => console.log("Musikfel vid tredje försöket:", e3)), 500);
+        console.log("Musikfel:", e);
       }
-      
-      // Logotypen animeras med logoZoomOut (4 s, 5-9 s)
+      // Låt logotypen zooma ut (4 s varaktighet enligt CSS-animationen)
       await sleep(4000);
       logo.style.display = "none";
-      
-      // 5. Vid 5 s: Visa crawl-sektionen samtidigt med logotypens försvinnande
+
+      // Visa crawl-texten (börjar från botten) vid ca 9 s
       const crawlContainer = document.getElementById("crawl-container");
       crawlContainer.style.display = "block";
-      // Crawl-animation definieras via CSS (varar 20 s, 5-25 s)
-      await sleep(20000);
+      // Crawl-animationen (25 s) sker via CSS
+      await sleep(25000);
       crawlContainer.style.display = "none";
-      
-      // 6. Vid 25 s: Visa centrala titeln
-      const mainTitle = document.getElementById("main-title");
-      mainTitle.style.display = "block";
-      await sleep(2000);
-      
-      // 7. Vid 27 s: Visa planet-effekten – den glider in utan drop-shadow
-      const planet = document.getElementById("planet-effect");
-      planet.style.display = "block";
-      planet.style.animation = "planetSlideIn 3s ease-out forwards";
-      await sleep(3000);
-      
-      // 8. Vid ca 30 s: Visa ljudknappar (fade in)
+
+      // Visa advice-knappar vid ca 34 s
       const buttons = document.getElementById("buttons");
       buttons.style.display = "block";
-      buttons.style.animation = "fadeInButtons 2s ease-in forwards";
+      // Fade-in sker via CSS-animation (2 s)
     }
 
-    // Funktion för att spela upp ljud via knappar
     function playSound(file) {
       const sound = document.getElementById("soundPlayer");
       sound.pause();
-      sound.currentTime = 0;
+      sounde.currentTime = 0;
       sound.src = `static/sounds/${file}`;
       sound.load();
       sound.play().catch(e => console.log("Ljudfel:", e));
     }
   </script>
 </body>
-</html> 
+</html>

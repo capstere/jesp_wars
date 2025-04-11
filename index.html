@@ -153,10 +153,10 @@
       line-height: 1.6em;
       color: #ffe81f;
       text-shadow: 2px 2px 8px #ffe81f, 0 0 10px #ffe81f;
-      animation: crawl 20s linear forwards;
+      animation: crawl 25s linear forwards;
     }
     @keyframes crawl {
-      0% { bottom: -100%; opacity: 1; }
+      -20% { bottom: -100%; opacity: 1; }
       100% { bottom: 100%; opacity: 0; }
     }
 
@@ -365,7 +365,7 @@
       const crawlContainer = document.getElementById("crawl-container");
       crawlContainer.style.display = "block";
       // Crawlen rullar 20 s → 9 s–29 s
-      await sleep(24000);
+      await sleep(30000);
       crawlContainer.style.display = "none";
 
       // 6. Vid 29 s: Visa centrala titeln

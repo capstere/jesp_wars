@@ -166,7 +166,7 @@
     #planet-effect {
       display: none;
       position: fixed;
-      bottom: -20%;  /* Ändrat från -40% till -20% för att komma högre upp */
+      bottom: 0%;  /* Ändrat från -40% till -20% för att komma högre upp */
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -238,7 +238,7 @@
 
   <!-- Logotyp -->
   <div id="logo">
-    <img src="static/images/starwars_logo.svg" alt="Star Wars Logo">
+    <img src="static/images/starwars_logo.png" alt="Star Wars Logo">
   </div>
 
   <!-- Centralt Title-element -->
@@ -302,7 +302,7 @@
 
     // Nedräkningsfunktion – startar direkt
     function startCountdown() {
-      const targetDate = new Date("2025-04-30T00:00:00").getTime();
+      const targetDate = new Date("2025-05-01T00:00:00").getTime();
       const countdownEl = document.getElementById("countdown");
       function updateCountdown() {
         const now = new Date().getTime();

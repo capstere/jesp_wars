@@ -6,7 +6,7 @@
   <style>
     /* ===============================================
        BASINSTÄLLNINGAR & BAKGRUND
-       - Sätter svart bas och stjärnhimmel.
+       Sätter svart bas, stjärnbakgrund, font och färger.
     =============================================== */
     body {
       margin: 0;
@@ -21,7 +21,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      /* Bakgrund med vita prickar från stars.jpeg */
+      /* Använd bilden "stars.jpeg" i static/images/ för stjärnhimlen */
       background: black url('static/images/stars.jpeg') repeat;
       background-size: cover;
       z-index: -99;
@@ -29,7 +29,7 @@
 
     /* ===============================================
        NEDRÄKNING
-       - Visas överst under hela introt.
+       Visas överst och uppdateras varje sekund.
     =============================================== */
     #countdown {
       position: fixed;
@@ -43,7 +43,7 @@
 
     /* ===============================================
        STARTKNAPP
-       - Visas mitt på skärmen, triggar introt vid klick.
+       Visas centrerat, triggar hela introt.
     =============================================== */
     #start-button {
       position: absolute;
@@ -68,7 +68,7 @@
 
     /* ===============================================
        INTRO-TEXT (BLÅ)
-       - Visas ca 5 s (syns 3 s och sedan fadas ut).
+       Visas i ca 5 sekunder och fadas ut.
     =============================================== */
     #intro-text {
       display: none;
@@ -79,37 +79,32 @@
       font-size: 2em;
       color: #4ee;
       z-index: 800;
-      /* Fade-out: börjar efter 3 s, varar 2 s */
       animation: fadeOut 2s ease-out forwards;
-      animation-delay: 3s;
+      animation-delay: 3s; /* Startar fade efter 3s */
     }
     @keyframes fadeOut {
       from { opacity: 1; }
-      to   { opacity: 0; }
+      to { opacity: 0; }
     }
 
     /* ===============================================
        LOGOTYP
-       - Logotypen visas i fullskärm (centrerad med flexbox) med objekt-fit: contain
-       - Den zoomas ut (endast skala, utan translation)
+       Logotypen visas centrerat via JavaScript (med flexbox),
+       och zoomas ut genom en ren scale-animation (ingen translation).
     =============================================== */
     #logo {
-      display: none;
+      display: none; /* Gömmer logotypen initialt */
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 850;
       background: black;
-      /* Centrerar innehållet */
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
+    /* Logotypen inuti visas i maximal storlek (centrerad) med flex när JS triggar den */
     #logo img {
       max-width: 90%;
       max-height: 90%;
       object-fit: contain;
       transform-origin: center center;
-      /* Endast skala (ingen translation) */
       animation: logoZoomOut 4s linear forwards;
     }
     @keyframes logoZoomOut {
@@ -119,7 +114,8 @@
 
     /* ===============================================
        CRAWL-SEKTION
-       - Texten börjar utanför skärmen (längre ut: -150%) och rullar upp med full opacitet till ca 80 % av vägen, sedan fadas ut.
+       Crawl-texten börjar utanför skärmen (bottom: -150%) 
+       och rullar upp. Den håller opaciteten fram till 80 % av tiden, sedan fadas ut.
     =============================================== */
     #crawl-container {
       display: none;
@@ -130,11 +126,11 @@
       overflow: hidden;
       perspective: 800px;
       z-index: 700;
-      pointer-events: none;
+      pointer-events: none; /* Så att crawl inte blockerar klick */
     }
     #crawl-text {
       position: absolute;
-      bottom: -150%;  /* Ändrat från -100% för att börja längre ut */
+      bottom: -150%; /* Börjar längre ut än tidigare */
       width: 100%;
       transform-origin: 50% 100%;
       transform: rotateX(25deg);
@@ -152,8 +148,8 @@
     }
 
     /* ===============================================
-       FINAL TEXT
-       - "RETURN OF THE JESP" visas centrerat tillsammans med advice-knapparna.
+       FINAL TEXT ("RETURN OF THE JESP")
+       Visas centrerat tillsammans med advice-knapparna.
     =============================================== */
     #final-text {
       display: none;
@@ -169,7 +165,7 @@
 
     /* ===============================================
        PLANET-EFFEKT (valfritt)
-       - När kameran sänker sig mot planeten.
+       Visas när kameran sänker sig mot planeten.
     =============================================== */
     #planet-effect {
       display: none;
@@ -185,12 +181,12 @@
     }
     @keyframes planetSlideIn {
       from { transform: translate(-50%, 50%); opacity: 0; }
-      to   { transform: translate(-50%, 0); opacity: 1; }
+      to { transform: translate(-50%, 0); opacity: 1; }
     }
 
     /* ===============================================
        ADVICE-KNAPPAR
-       - Visas sist med fade-in.
+       Visas sist, fade in via CSS-animation.
     =============================================== */
     #buttons {
       display: none;
@@ -205,7 +201,7 @@
     }
     @keyframes fadeInButtons {
       from { opacity: 0; }
-      to   { opacity: 1; }
+      to { opacity: 1; }
     }
     .btn {
       background: #ffe81f;
@@ -226,34 +222,36 @@
     /* ===============================================
        AUDIO (dolt)
     =============================================== */
-    audio { display: none; }
+    audio {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="stars"></div>
 
-  <!-- Nedräkningen visas överst -->
+  <!-- Nedräkningen visas direkt -->
   <div id="countdown"></div>
 
-  <!-- Startknapp: Triggar hela introt -->
+  <!-- Startknapp – triggar introt -->
   <button id="start-button" onclick="startIntro()">MAY THE JESP BE WITH YOU</button>
 
-  <!-- Intro-text (blå): Visas ca 5 s, sedan fadas ut -->
+  <!-- Intro-text (blå) visas i ca 5 s -->
   <div id="intro-text">A long time ago, in a Cepheid far, far away…</div>
 
-  <!-- Logotyp: Centreras med flexbox, zoomar ut (endast scale, ingen translation) -->
+  <!-- Logotypen visas vid triggat tid (den döljs från början; visas centrerat via JS) -->
   <div id="logo">
     <img src="static/images/starwars_logo.png" alt="Star Wars Logo">
   </div>
 
-  <!-- Final text ("RETURN OF THE JESP"): Visas centrerat tillsammans med advice-knapparna -->
+  <!-- Final text: RETURN OF THE JESP – visas sist centrerat -->
   <div id="final-text">RETURN OF THE JESP</div>
 
-  <!-- Crawl-sektionen: Texten rullar upp från längre ut (börjar vid -150%) och fadas ut mot slutet -->
+  <!-- Crawl-sektionen: Text crawl som rullar upp från en längre startposition -->
   <div id="crawl-container">
     <div id="crawl-text">
-      <p style="text-align: center; margin: 0;"><strong>EPISODE XX</strong></p>
-      <p style="text-align: center; margin: 0;"><strong>RETURN OF THE JESP</strong></p>
+      <p style="margin: 0; text-align: center;"><strong>EPISODE XX</strong></p>
+      <p style="margin: 0; text-align: center;"><strong>RETURN OF THE JESP</strong></p>
       <p>
         The Jedi once known as JESP has been summoned back from self-imposed exile by the FIRST ORDER.
       </p>
@@ -284,10 +282,10 @@
     </div>
   </div>
 
-  <!-- Planet-effekt: Visas valfritt, simulerar att kameran sänker sig -->
+  <!-- Planet-effekt (valfritt) -->
   <img id="planet-effect" src="static/images/planet.png" alt="Planet with Moons">
 
-  <!-- Advice-knappar: Visas sist med fade in -->
+  <!-- Advice-knappar (visas sist med fade in) -->
   <div id="buttons">
     <button class="btn" onclick="playSound('fraga1.mp3')">How?</button>
     <button class="btn" onclick="playSound('fraga2.mp3')">When?</button>
@@ -295,21 +293,20 @@
     <button class="btn" onclick="playSound('do_it.mp3')">What?</button>
   </div>
 
-  <!-- Audio-element: Bakgrundsmusik och advice-ljud -->
+  <!-- Audio-element (bakgrundsmusik och advice-ljud) -->
   <audio id="bgMusic" src="static/sounds/starwars_theme.mp3" preload="auto"></audio>
   <audio id="soundPlayer" preload="auto"></audio>
 
   <script>
     // ---------------------------
-    // Hjälpfunktion: sleep(ms)
-    // Returnerar ett Promise som löses efter angivet antal millisekunder.
+    // sleep(ms): Returnerar ett Promise som löses efter ms millisekunder.
     // ---------------------------
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     // ---------------------------
-    // Nedräkning: Visar tiden kvar till 2025-05-01.
+    // startCountdown: Uppdaterar nedräkningen varje sekund.
     // ---------------------------
     function startCountdown() {
       const targetDate = new Date("2025-05-01T00:00:00").getTime();
@@ -333,24 +330,34 @@
     }
 
     // ---------------------------
-    // Huvudsekvens: Styr hela introt i asynkrona steg.
+    // startIntro: Huvudsekvensen för introt.
+    // Steg:
+    // 1. Dölj startknappen, starta nedräkningen.
+    // 2. Visa intro-texten i ca 5 s.
+    // 3. Visa logotypen (centrerad med flex, utan extra translation) och starta bakgrundsmusiken.
+    // 4. Efter 4 s, döljs logotypen.
+    // 5. Visa crawl-sektionen.
+    // 6. Efter crawl-animationen, döljs den och planet-effekt visas.
+    // 7. Slutligen, visas final text ("RETURN OF THE JESP") och advice-knappar.
     // ---------------------------
     async function startIntro() {
       // Dölj startknappen.
       document.getElementById("start-button").style.display = "none";
       
-      // Starta nedräkningen (visas direkt).
+      // Starta nedräkningen.
       startCountdown();
       
-      // Visa intro-texten (blå) i ca 5 s, sedan döljs.
+      // Visa intro-texten i ca 5 s.
       const introText = document.getElementById("intro-text");
       introText.style.display = "block";
       await sleep(5000);
       introText.style.display = "none";
       
-      // Vid ca 5 s: Visa logotypen i mitten (med flexbox) och starta bakgrundsmusiken.
+      // Visa logotypen (centrerad via JS) och starta bakgrundsmusiken direkt.
       const logo = document.getElementById("logo");
       logo.style.display = "flex";
+      logo.style.justifyContent = "center";
+      logo.style.alignItems = "center";
       const bgMusic = document.getElementById("bgMusic");
       bgMusic.currentTime = 0;
       try {
@@ -358,35 +365,34 @@
       } catch(e) {
         console.log("Musikfel:", e);
       }
-      // Logotypen zoomar ut över 4 s (CSS-animationen styr detta).
+      // Vänta 4 s medan logotypen zoomar ut (CSS-animation)
       await sleep(4000);
       logo.style.display = "none";
       
-      // Vid ca 9 s: Visa crawl-sektionen.
+      // Visa crawl-sektionen (börjar vid ca 9 s).
       const crawlContainer = document.getElementById("crawl-container");
       crawlContainer.style.display = "block";
-      // Crawl-animationen sker via CSS (25 s varaktighet med gradvis fade ut).
+      // Crawl-animationen sker via CSS (25 s varaktighet)
       await sleep(25000);
       crawlContainer.style.display = "none";
       
-      // Vid ca 34 s: Visa planet-effekten (valfritt).
+      // Visa planet-effekten (valfritt) vid ca 34 s.
       const planet = document.getElementById("planet-effect");
       planet.style.display = "block";
       planet.style.animation = "planetSlideIn 3s ease-out forwards";
       await sleep(3000);
       
       // Visa final text ("RETURN OF THE JESP") – centrerad.
-      const finalText = document.getElementById("final-text");
-      finalText.style.display = "block";
+      document.getElementById("final-text").style.display = "block";
       
-      // Vid ca 37 s: Visa advice-knappar med fade-in.
+      // Visa advice-knappar med fade-in vid ca 37 s.
       const buttons = document.getElementById("buttons");
       buttons.style.display = "block";
       buttons.style.animation = "fadeInButtons 2s ease-in forwards";
     }
 
     // ---------------------------
-    // Spela upp ljud för advice-knappar.
+    // playSound: Spelar upp ett givet ljud när en advice-knapp klickas.
     // ---------------------------
     function playSound(file) {
       const sound = document.getElementById("soundPlayer");

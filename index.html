@@ -83,28 +83,30 @@
       to   { opacity: 0; }
     }
 
-    /******************************************************
-     * LOGOTYP
-     * Visas från 5 s, fyller hela bredden och zoomar ut
-     ******************************************************/
-    #logo {
-      display: none;
-      position: absolute;
-      top: 0;
-      width: 100%;
-      text-align: center;
-      z-index: 850;
-    }
-    #logo img {
-      width: 100%;
-      height: auto;
-      animation: logoZoomOut 4s ease-out forwards;
-    }
-    /* Skapar Star Wars-liknande zoom som krymper logon och flyttar den uppåt */
-    @keyframes logoZoomOut {
-      0% { transform: scale(1) translateY(0);   opacity: 1; }
-      100% { transform: scale(0.1) translateY(-100vh); opacity: 0; }
-    }
+/******************************************************
+ * LOGOTYP
+ * Visas från 5 s, fyller hela bredden och zoomar ut
+ ******************************************************/
+#logo {
+  display: none;
+  position: absolute;
+  top: 5px; /* Added 'px' for proper positioning */
+  width: 100%;
+  text-align: center;
+  z-index: 850;
+}
+
+#logo img {
+  width: 100%;
+  height: auto;
+  animation: logoZoomOut 4s ease-out forwards;
+}
+
+/* Skapar Star Wars-liknande zoom som krymper logon och flyttar den uppåt */
+@keyframes logoZoomOut {
+  0% { transform: scale(1) translateY(0); opacity: 1; }
+  100% { transform: scale(0.1) translateY(-100vh); opacity: 0; }
+}
 
     /******************************************************
      * CENTRALT TITLE-ELEMENT ("The Return of the JESP")
@@ -165,7 +167,7 @@
     #planet-effect {
       display: none;
       position: fixed;
-      bottom: -20%;
+      bottom: 0%;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -305,7 +307,7 @@
 
     // Nedräkning – startas direkt
     function startCountdown() {
-      const targetDate = new Date("2025-04-30T00:00:00").getTime();
+      const targetDate = new Date("2025-05-01T00:00:00").getTime();
       const countdownEl = document.getElementById("countdown");
       function updateCountdown() {
         const now = new Date().getTime();
@@ -363,7 +365,7 @@
       const crawlContainer = document.getElementById("crawl-container");
       crawlContainer.style.display = "block";
       // Crawlen rullar 20 s → 9 s–29 s
-      await sleep(20000);
+      await sleep(24000);
       crawlContainer.style.display = "none";
 
       // 6. Vid 29 s: Visa centrala titeln

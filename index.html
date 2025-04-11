@@ -91,7 +91,7 @@
     #logo {
       display: none;
       position: absolute;
-      top: 30%;
+      top: 50%;
       width: 100%;
       text-align: center;
       z-index: 850;
@@ -116,7 +116,7 @@
       top: 40%;
       width: 100%;
       text-align: center;
-      font-size: 3.5em;
+      font-size: 4.5em;
       color: #ffe81f;
       opacity: 0;
       z-index: 860;
@@ -145,9 +145,9 @@
       width: 90%;
       margin: 0 5%;
       transform-origin: 50% 100%;
-      transform: rotateX(25deg);
+      transform: rotateX(20deg);
       text-align: justify;
-      font-size: 1.2em;
+      font-size: 1.5em;
       line-height: 1.6em;
       color: #ffe81f;
       text-shadow: 0 0 5px #ffe81f, 0 0 10px #ffe81f;
@@ -164,13 +164,12 @@
      ******************************************************/
     #planet-effect {
       position: fixed;
-      bottom: -40%;
+      bottom: -20%;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
       opacity: 0;
       z-index: -2;
-      filter: drop-shadow(0 0 10px #ffe81f);
       animation: planetSlideIn 4s ease-out forwards;
       animation-delay: 29s;
     }
@@ -186,13 +185,13 @@
     #buttons {
       display: none;
       position: absolute;
-      bottom: 30px;
+      bottom: 40px;
       width: 100%;
       text-align: center;
       opacity: 0;
-      z-index: 800;
+      z-index: 900;
       animation: fadeInButtons 2s ease-in forwards;
-      animation-delay: 33s;
+      animation-delay: 30s;
     }
     @keyframes fadeInButtons {
       from { opacity: 0; }
@@ -303,7 +302,7 @@
 
     // Nedräkningsfunktion – visas direkt
     function startCountdown() {
-      const targetDate = new Date("2025-04-30T00:00:00").getTime();
+      const targetDate = new Date("2025-05-01T00:00:00").getTime();
       const countdownEl = document.getElementById("countdown");
       function updateCountdown() {
         const now = new Date().getTime();

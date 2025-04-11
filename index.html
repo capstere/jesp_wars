@@ -99,7 +99,7 @@
       width: 100vw;
       height: 100vh;
       text-align: center;
-      z-index: 500;
+      z-index: 100;
       /* Ändra bakgrundsfärg här om nödvändigt för att fylla ut tomrum */
       background: black;
     }
@@ -125,7 +125,7 @@
     #crawl-container {
       display: none;
       position: fixed;
-      bottom: 0;
+      bottom: -100;
       width: 100%;
       height: 100%;
       overflow: hidden;
@@ -135,7 +135,7 @@
     }
     #crawl-text {
       position: absolute;
-      bottom: -200%; /* Börjar utanför skärmen */
+      bottom: -500%; /* Börjar utanför skärmen */
       width: 100%;
       transform-origin: 50% 100%;
       transform: rotateX(25deg);
@@ -147,7 +147,7 @@
       animation: crawlAnim 25s linear forwards;
     }
     @keyframes crawlAnim {
-      0% { bottom: -100%; opacity: 1; }
+      0% { bottom: -200%; opacity: 1; }
       80% { bottom: 90%; opacity: 1; }
       100% { bottom: 100%; opacity: 0; }
     }
